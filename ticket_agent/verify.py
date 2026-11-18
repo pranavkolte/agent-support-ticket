@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from langdetect import DetectorFactory, LangDetectException, detect
 
 from .classify import Classification
+from .llm import LlmUnavailable
 from .prompts import REPLY_JUDGE_OUTPUT_SCHEMA, REPLY_JUDGE_SYSTEM_PROMPT, build_reply_judge_user_message
 from .redaction import contains_payment_details
 
@@ -79,19 +80,19 @@ def run_deterministic_reply_checks(draft_reply: str, expected_language: str, faq
     return failed_checks
 
 
-def check_reply_draft(
-    backend, ticket: dict, classification: Classification, faq_text: str, faq_entries: dict[str, str]
-) -> ReplyCheckResult:
+def check_reply_draft(backend, ticket: dict, classification: Classification, faq_text: str) -> ReplyCheckResult:
     failed_checks = run_deterministic_reply_checks(classification.draft_reply, classification.language, faq_text)
     if failed_checks:
         return ReplyCheckResult(passed=False, failed_checks=failed_checks)
-    cited_entries = [faq_entries[faq_id] for faq_id in classification.faq_ids]
-    judgement = backend.ask_for_structured_answer(
-        purpose="judge_reply",
-        system_prompt=REPLY_JUDGE_SYSTEM_PROMPT,
-        user_message=build_reply_judge_user_message(ticket, classification.draft_reply, cited_entries),
-        output_schema=REPLY_JUDGE_OUTPUT_SCHEMA,
-    )
+    try:
+        judgement = backend.ask_for_structured_answer(
+            purpose="judge_reply",
+            system_prompt=REPLY_JUDGE_SYSTEM_PROMPT,
+            user_message=build_reply_judge_user_message(ticket, classification.draft_reply, faq_text),
+            output_schema=REPLY_JUDGE_OUTPUT_SCHEMA,
+        )
+    except LlmUnavailable:
+        return ReplyCheckResult(passed=False, failed_checks=["reply_judge_unavailable"])
     answer = judgement.data
     if answer.get("extra_claims") or not answer.get("only_uses_cited_faq_content"):
         failed_checks.append("reply_has_claims_outside_faq")

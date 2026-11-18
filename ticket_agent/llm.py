@@ -60,8 +60,9 @@ class AnthropicBackend:
 
 
 GROQ_CHAT_COMPLETIONS_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MAX_ATTEMPTS = 4
+GROQ_MAX_ATTEMPTS = 10
 GROQ_DEFAULT_WAIT_SECONDS = 2.0
+GROQ_MIN_WAIT_SECONDS = 1.5
 GROQ_TIMEOUT_SECONDS = 60.0
 
 
@@ -102,7 +103,7 @@ class GroqBackend:
 
     def read_wait_seconds(self, response: httpx.Response) -> float:
         try:
-            return max(float(response.headers.get("retry-after", GROQ_DEFAULT_WAIT_SECONDS)), 0.0)
+            return max(float(response.headers.get("retry-after", GROQ_DEFAULT_WAIT_SECONDS)), GROQ_MIN_WAIT_SECONDS)
         except ValueError:
             return GROQ_DEFAULT_WAIT_SECONDS
 

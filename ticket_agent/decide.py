@@ -191,7 +191,7 @@ def decide_ticket(ticket: dict, backend, faq_text: str) -> Decision:
     if reason_to_hand_off:
         return build_decision(ticket["id"], classification, "handoff", rule_triggered=reason_to_hand_off, **usage)
 
-    reply_check = check_reply_draft(backend, ticket, classification, faq_text, faq_entries)
+    reply_check = check_reply_draft(backend, ticket, classification, faq_text)
     usage["input_tokens"] += reply_check.input_tokens
     usage["output_tokens"] += reply_check.output_tokens
     if not reply_check.passed:

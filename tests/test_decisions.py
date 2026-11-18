@@ -2,6 +2,7 @@ from pathlib import Path
 
 from tests.conftest import ScriptedBackend, build_classification
 from ticket_agent.decide import decide_ticket
+from ticket_agent.llm import LlmUnavailable
 from ticket_agent.faq import load_faq_text, split_faq_into_entries
 from ticket_agent.verify import find_menu_links_missing_from_faq, run_deterministic_reply_checks
 
@@ -96,3 +97,14 @@ def test_bracketed_translation_of_a_menu_path_is_allowed_but_a_translated_path_a
     rejected = "Hallo, wähle die Sprache unter Profil → Sprache aus."
     assert "menu_path_not_in_faq" not in run_deterministic_reply_checks(allowed, "de", FAQ_TEXT)
     assert "menu_path_not_in_faq" in run_deterministic_reply_checks(rejected, "de", FAQ_TEXT)
+
+
+def test_judge_outage_turns_the_reply_into_a_handoff_instead_of_crashing():
+    class JudgeDownBackend(ScriptedBackend):
+        def ask_for_structured_answer(self, purpose, system_prompt, user_message, output_schema):
+            if purpose == "judge_reply":
+                raise LlmUnavailable("down")
+            return super().ask_for_structured_answer(purpose, system_prompt, user_message, output_schema)
+
+    decision = decide_ticket(TICKET, JudgeDownBackend(build_classification()), FAQ_TEXT)
+    assert decision.action == "handoff" and "reply_judge_unavailable" in decision.verifier_result
