@@ -78,3 +78,14 @@ def test_log_lines_contain_no_ticket_body_or_payment_details(tmp_path, settings)
     log_text = log.log_path.read_text()
     assert "NL91" not in log_text and "Hoe voeg ik iemand toe" not in log_text
     assert log_text.count("\n") == 1
+
+
+def test_ticket_reopened_after_a_practice_reset_is_handled_again(tmp_path, settings):
+    server = FakeHelpdeskServer(["T1"])
+    backend = ScriptedBackend(build_classification())
+    helpdesk, state, log = build_run(tmp_path, settings, server)
+    run_agent(helpdesk, backend, FAQ_TEXT, state, log)
+    server.open_ids = ["T1"]
+    server.handled_ids = []
+    run_agent(helpdesk, backend, FAQ_TEXT, state, log)
+    assert server.replies_received == ["T1", "T1"]

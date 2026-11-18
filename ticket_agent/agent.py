@@ -70,7 +70,7 @@ def resend_pending_decisions_from_previous_run(helpdesk, state_store, run_log, s
 
 def decide_and_send_new_tickets(helpdesk, backend, faq_text, state_store, run_log, summary: RunSummary) -> None:
     for ticket in helpdesk.fetch_open_tickets():
-        if state_store.knows_ticket(ticket["id"]):
+        if state_store.has_unfinished_entry(ticket["id"]):
             continue
         started_at = time.monotonic()
         retries_before = helpdesk.retries_used

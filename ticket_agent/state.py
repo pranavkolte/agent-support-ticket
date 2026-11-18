@@ -19,8 +19,8 @@ class StateStore:
         temporary_path.write_text(json.dumps(self.entries, ensure_ascii=False, indent=2), encoding="utf-8")
         os.replace(temporary_path, self.state_path)
 
-    def knows_ticket(self, ticket_id: str) -> bool:
-        return ticket_id in self.entries
+    def has_unfinished_entry(self, ticket_id: str) -> bool:
+        return ticket_id in self.entries and self.entries[ticket_id]["status"] != DONE
 
     def is_done(self, ticket_id: str) -> bool:
         return self.entries.get(ticket_id, {}).get("status") == DONE
