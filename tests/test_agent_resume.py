@@ -62,6 +62,7 @@ def test_crash_mid_run_then_rerun_never_answers_a_customer_twice(tmp_path, setti
 def test_pending_ticket_whose_post_already_landed_is_closed_out_via_409(tmp_path, settings):
     server = FakeHelpdeskServer(["T1"])
     server.handled_ids.append("T1")
+    server.open_ids = []
     helpdesk, state, log = build_run(tmp_path, settings, server)
     saved_decision = decide_ticket({"id": "T1", "subject": "a", "body": "b"}, ScriptedBackend(build_classification()), FAQ_TEXT)
     state.record_decision_before_sending("T1", saved_decision.to_state_dict())
