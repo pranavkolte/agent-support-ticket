@@ -18,6 +18,7 @@ def settings():
         llm_backend="file_exchange",
         model="m",
         anthropic_api_key=None,
+        groq_api_key=None,
     )
 
 

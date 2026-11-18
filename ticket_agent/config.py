@@ -15,6 +15,7 @@ class Settings:
     llm_backend: str
     model: str
     anthropic_api_key: str | None
+    groq_api_key: str | None
 
 
 def read_required_environment_variable(name: str) -> str:
@@ -43,4 +44,5 @@ def load_settings_from_environment(require_helpdesk_access: bool = True) -> Sett
         llm_backend=os.environ.get("LLM_BACKEND", "anthropic").strip(),
         model=os.environ.get("MODEL", DEFAULT_MODEL).strip(),
         anthropic_api_key=read_optional_environment_variable("ANTHROPIC_API_KEY"),
+        groq_api_key=read_optional_environment_variable("GROQ_API_KEY"),
     )
