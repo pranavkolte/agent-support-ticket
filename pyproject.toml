@@ -1,0 +1,15 @@
+[project]
+name = "support-ticket-agent"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "anthropic>=2.10.0",
+    "httpx>=0.28.1",
+    "langdetect>=1.0.9",
+    "pytest>=9.2.0",
+    "python-dotenv>=1.2.4",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
