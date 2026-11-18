@@ -144,6 +144,13 @@ def build_fallback_handoff_decision(ticket: dict, failure_description: str) -> D
     )
 
 
+def describe_failed_reply_check(reply_check) -> str:
+    description = "failed:" + ",".join(reply_check.failed_checks)
+    if reply_check.extra_claims:
+        description += " claims=" + "; ".join(reply_check.extra_claims)[:300]
+    return description
+
+
 def find_reason_to_hand_off(classification: Classification, ticket_text: str, faq_entries: dict[str, str]) -> str | None:
     topic = classification.always_human_topic
     if topic == "none":
@@ -152,6 +159,8 @@ def find_reason_to_hand_off(classification: Classification, ticket_text: str, fa
         return topic
     if contains_prompt_injection_attempt(ticket_text):
         return "prompt_injection_suspected"
+    if classification.priority == "P1":
+        return "p1_needs_a_human"
     if not classification.answer_fully_in_faq or not classification.draft_reply:
         return "answer_not_fully_in_faq"
     if not classification.faq_ids or any(faq_id not in faq_entries for faq_id in classification.faq_ids):
@@ -167,7 +176,7 @@ def decide_ticket(ticket: dict, backend, faq_text: str) -> Decision:
     try:
         classification, model_response = classify_ticket_with_model(backend, faq_text, ticket)
     except (LlmUnavailable, InvalidModelOutput) as error:
-        return build_fallback_handoff_decision(ticket, type(error).__name__)
+        return build_fallback_handoff_decision(ticket, f"{type(error).__name__}: {str(error)[:150]}")
     usage = {"input_tokens": model_response.input_tokens, "output_tokens": model_response.output_tokens}
     ticket_text = build_ticket_text(ticket)
 
@@ -191,7 +200,7 @@ def decide_ticket(ticket: dict, backend, faq_text: str) -> Decision:
             classification,
             "handoff",
             rule_triggered="reply_failed_verification",
-            verifier_result="failed:" + ",".join(reply_check.failed_checks),
+            verifier_result=describe_failed_reply_check(reply_check),
             english_translation=reply_check.english_translation,
             **usage,
         )

@@ -3,7 +3,7 @@ from pathlib import Path
 from tests.conftest import ScriptedBackend, build_classification
 from ticket_agent.decide import decide_ticket
 from ticket_agent.faq import load_faq_text, split_faq_into_entries
-from ticket_agent.verify import find_menu_links_missing_from_faq
+from ticket_agent.verify import find_menu_links_missing_from_faq, run_deterministic_reply_checks
 
 FAQ_TEXT = load_faq_text(Path("faq.md"))
 TICKET = {"id": "T005", "subject": "Nieuwe medewerker", "body": "Hoe voeg ik een nieuwe medewerker toe?"}
@@ -78,3 +78,21 @@ def test_spam_flag_on_a_refund_request_still_reaches_a_human():
 
 def test_real_faq_menu_paths_pass_the_menu_check():
     assert find_menu_links_missing_from_faq("Ga naar Instellingen → Abonnement → Facturen.", FAQ_TEXT) == []
+
+
+def test_p1_ticket_is_never_auto_replied():
+    decision = decide_ticket(TICKET, ScriptedBackend(build_classification(priority="P1")), FAQ_TEXT)
+    assert decision.action == "handoff" and decision.rule_triggered == "p1_needs_a_human"
+
+
+def test_failed_judge_check_keeps_the_extra_claims_for_the_log():
+    judgement = {"english_translation": "x", "extra_claims": ["promises a refund"], "only_uses_cited_faq_content": False, "answers_the_question": True}
+    decision = decide_ticket(TICKET, ScriptedBackend(build_classification(), judgement), FAQ_TEXT)
+    assert "promises a refund" in decision.verifier_result
+
+
+def test_bracketed_translation_of_a_menu_path_is_allowed_but_a_translated_path_alone_is_not():
+    allowed = "Hallo, wähle die Sprache unter Profiel → Taal (Profil → Sprache) aus."
+    rejected = "Hallo, wähle die Sprache unter Profil → Sprache aus."
+    assert "menu_path_not_in_faq" not in run_deterministic_reply_checks(allowed, "de", FAQ_TEXT)
+    assert "menu_path_not_in_faq" in run_deterministic_reply_checks(rejected, "de", FAQ_TEXT)

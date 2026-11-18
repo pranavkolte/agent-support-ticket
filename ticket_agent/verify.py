@@ -20,6 +20,7 @@ class ReplyCheckResult:
     passed: bool
     failed_checks: list[str] = field(default_factory=list)
     english_translation: str | None = None
+    extra_claims: list[str] = field(default_factory=list)
     input_tokens: int = 0
     output_tokens: int = 0
 
@@ -68,9 +69,10 @@ def run_deterministic_reply_checks(draft_reply: str, expected_language: str, faq
         failed_checks.append("reply_language_mismatch")
     if contains_payment_details(draft_reply):
         failed_checks.append("payment_details_in_reply")
-    if find_menu_links_missing_from_faq(draft_reply, faq_text):
+    draft_without_bracketed_translations = re.sub(r"\([^)]*\)", " ", draft_reply)
+    if find_menu_links_missing_from_faq(draft_without_bracketed_translations, faq_text):
         failed_checks.append("menu_path_not_in_faq")
-    if find_quoted_phrases_missing_from_faq(draft_reply, faq_text):
+    if find_quoted_phrases_missing_from_faq(draft_without_bracketed_translations, faq_text):
         failed_checks.append("quoted_term_not_in_faq")
     if find_web_addresses_missing_from_faq(draft_reply, faq_text):
         failed_checks.append("web_address_not_in_faq")
@@ -99,6 +101,7 @@ def check_reply_draft(
         passed=not failed_checks,
         failed_checks=failed_checks,
         english_translation=answer.get("english_translation"),
+        extra_claims=[str(claim) for claim in answer.get("extra_claims") or []],
         input_tokens=judgement.input_tokens,
         output_tokens=judgement.output_tokens,
     )
