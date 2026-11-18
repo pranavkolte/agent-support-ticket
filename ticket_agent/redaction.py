@@ -6,6 +6,7 @@ IBAN_CANDIDATE_PATTERN = re.compile(
     r"\b[A-Z]{2}\d{2}(?:[ ]?[A-Z0-9]{4}){2,7}(?:[ ]?[A-Z0-9]{1,3})?\b",
     re.IGNORECASE,
 )
+CARD_SECURITY_CODE_PATTERN = re.compile(r"\b(cvc2?|cvv2?)\W{0,3}\d{3,4}\b", re.IGNORECASE)
 CARD_NUMBER_CANDIDATE_PATTERN = re.compile(r"(?<![\w-])(?:\d[ -]?){12,18}\d(?![\w-])")
 
 
@@ -39,12 +40,13 @@ def redact_payment_details(text: str) -> str:
         else match.group(),
         text,
     )
-    return CARD_NUMBER_CANDIDATE_PATTERN.sub(
+    without_card_numbers = CARD_NUMBER_CANDIDATE_PATTERN.sub(
         lambda match: REDACTION_MARKER
         if card_number_has_valid_luhn_checksum(match.group())
         else match.group(),
         without_ibans,
     )
+    return CARD_SECURITY_CODE_PATTERN.sub(REDACTION_MARKER, without_card_numbers)
 
 
 def contains_payment_details(text: str) -> bool:

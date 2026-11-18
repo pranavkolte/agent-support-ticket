@@ -23,6 +23,8 @@ ALWAYS_HUMAN_TOPIC_PATTERNS = {
         r"gehackt", r"\bhack", r"datalek", r"inbraak", r"phishing", r"onbevoegd",
         r"ongeautoriseerd", r"security (incident|breach)", r"data ?breach",
         r"niet (van )?mij(n)? (account|login)", r"onbekende (login|inlog)",
+        r"vreemde (login|inlog)", r"verdachte? (login|inlog|activiteit)",
+        r"(iemand|onbekende?) .{0,80}ingelogd", r"suspicious (login|activity)",
     ],
     "legal": [
         r"advocaat", r"rechtszaak", r"juridische stappen", r"dagvaard", r"aansprakelijk",
@@ -46,11 +48,16 @@ INJECTION_PATTERNS = [
     r"new instructions?",
     r"reveal (your|the) (prompt|instructions)",
     r"</?\s*ticket\s*>",
+    r"\bai[- ]?(assistent|assistant|agent)\b",
+    r"(notitie|note|bericht|message) (voor|for) (de |het |the )?(ai|assistent|assistant|bot|model)",
+    r"systeembericht", r"system message", r"markeer dit ticket",
 ]
+
+REPLY_PREFIX_PATTERN = re.compile(r"^\s*((re|fw|fwd|aw|antw|wg)\s*:\s*)+", re.IGNORECASE)
 
 
 def is_ticket_empty(ticket: dict) -> bool:
-    subject = (ticket.get("subject") or "").strip()
+    subject = REPLY_PREFIX_PATTERN.sub("", ticket.get("subject") or "").strip()
     body = (ticket.get("body") or "").strip()
     return not subject and not body
 
