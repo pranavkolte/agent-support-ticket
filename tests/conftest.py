@@ -19,6 +19,7 @@ def settings():
         model="m",
         anthropic_api_key=None,
         groq_api_key=None,
+        gemini_api_key=None,
     )
 
 

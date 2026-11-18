@@ -59,19 +59,21 @@ class AnthropicBackend:
         return LlmResponse(answer_block.input, message.usage.input_tokens, message.usage.output_tokens)
 
 
-GROQ_CHAT_COMPLETIONS_URL = "https://api.groq.com/openai/v1/chat/completions"
-GROQ_MAX_ATTEMPTS = 10
-GROQ_DEFAULT_WAIT_SECONDS = 2.0
-GROQ_MIN_WAIT_SECONDS = 1.5
-GROQ_TIMEOUT_SECONDS = 60.0
+GROQ_ENDPOINT_URL = "https://api.groq.com/openai/v1/chat/completions"
+GEMINI_ENDPOINT_URL = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+OPENAI_COMPATIBLE_MAX_ATTEMPTS = 10
+OPENAI_COMPATIBLE_DEFAULT_WAIT_SECONDS = 2.0
+OPENAI_COMPATIBLE_MIN_WAIT_SECONDS = 1.5
+OPENAI_COMPATIBLE_TIMEOUT_SECONDS = 60.0
 
 
-class GroqBackend:
-    def __init__(self, api_key: str, model: str, http_client: httpx.Client | None = None, sleep=time.sleep):
+class OpenAiCompatibleBackend:
+    def __init__(self, endpoint_url: str, api_key: str, model: str, http_client: httpx.Client | None = None, sleep=time.sleep):
+        self.endpoint_url = endpoint_url
         self.model = model
         self.sleep = sleep
         self.http_client = http_client or httpx.Client(
-            headers={"Authorization": f"Bearer {api_key}"}, timeout=GROQ_TIMEOUT_SECONDS
+            headers={"Authorization": f"Bearer {api_key}"}, timeout=OPENAI_COMPATIBLE_TIMEOUT_SECONDS
         )
 
     def build_request_body(self, system_prompt: str, user_message: str, output_schema: dict) -> dict:
@@ -103,25 +105,25 @@ class GroqBackend:
 
     def read_wait_seconds(self, response: httpx.Response) -> float:
         try:
-            return max(float(response.headers.get("retry-after", GROQ_DEFAULT_WAIT_SECONDS)), GROQ_MIN_WAIT_SECONDS)
+            return max(float(response.headers.get("retry-after", OPENAI_COMPATIBLE_DEFAULT_WAIT_SECONDS)), OPENAI_COMPATIBLE_MIN_WAIT_SECONDS)
         except ValueError:
-            return GROQ_DEFAULT_WAIT_SECONDS
+            return OPENAI_COMPATIBLE_DEFAULT_WAIT_SECONDS
 
     def send_request_with_retries(self, body: dict) -> httpx.Response:
-        for attempt in range(1, GROQ_MAX_ATTEMPTS + 1):
+        for attempt in range(1, OPENAI_COMPATIBLE_MAX_ATTEMPTS + 1):
             try:
-                response = self.http_client.post(GROQ_CHAT_COMPLETIONS_URL, json=body)
+                response = self.http_client.post(self.endpoint_url, json=body)
             except httpx.TransportError as error:
-                if attempt == GROQ_MAX_ATTEMPTS:
+                if attempt == OPENAI_COMPATIBLE_MAX_ATTEMPTS:
                     raise LlmUnavailable(str(error)) from error
-                self.sleep(GROQ_DEFAULT_WAIT_SECONDS)
+                self.sleep(OPENAI_COMPATIBLE_DEFAULT_WAIT_SECONDS)
                 continue
             if response.status_code < 400:
                 return response
-            if attempt == GROQ_MAX_ATTEMPTS or not self.response_is_worth_retrying(response):
-                raise LlmUnavailable(f"Groq returned {response.status_code}: {response.text[:300]}")
+            if attempt == OPENAI_COMPATIBLE_MAX_ATTEMPTS or not self.response_is_worth_retrying(response):
+                raise LlmUnavailable(f"LLM endpoint returned {response.status_code}: {response.text[:300]}")
             self.sleep(self.read_wait_seconds(response))
-        raise LlmUnavailable("Groq retries exhausted")
+        raise LlmUnavailable("LLM endpoint retries exhausted")
 
     def ask_for_structured_answer(
         self, purpose: str, system_prompt: str, user_message: str, output_schema: dict
@@ -132,7 +134,7 @@ class GroqBackend:
             tool_call = payload["choices"][0]["message"]["tool_calls"][0]
             answer = json.loads(tool_call["function"]["arguments"])
         except (KeyError, IndexError, TypeError, ValueError) as error:
-            raise LlmUnavailable(f"Groq returned no usable structured answer: {error}") from error
+            raise LlmUnavailable(f"LLM endpoint returned no usable structured answer: {error}") from error
         usage = payload.get("usage", {})
         return LlmResponse(answer, usage.get("prompt_tokens", 0), usage.get("completion_tokens", 0))
 
@@ -173,7 +175,11 @@ def create_llm_backend(settings, exchange_directory: Path = Path("eval/pending")
     if settings.llm_backend == "groq":
         if not settings.groq_api_key:
             raise SystemExit("LLM_BACKEND=groq needs GROQ_API_KEY. See .env.example.")
-        return GroqBackend(settings.groq_api_key, settings.model)
+        return OpenAiCompatibleBackend(GROQ_ENDPOINT_URL, settings.groq_api_key, settings.model)
+    if settings.llm_backend == "gemini":
+        if not settings.gemini_api_key:
+            raise SystemExit("LLM_BACKEND=gemini needs GEMINI_API_KEY. See .env.example.")
+        return OpenAiCompatibleBackend(GEMINI_ENDPOINT_URL, settings.gemini_api_key, settings.model)
     if settings.llm_backend == "file_exchange":
         return FileExchangeBackend(exchange_directory)
-    raise SystemExit(f"Unknown LLM_BACKEND {settings.llm_backend!r}. Use anthropic, groq or file_exchange.")
+    raise SystemExit(f"Unknown LLM_BACKEND {settings.llm_backend!r}. Use anthropic, groq, gemini or file_exchange.")

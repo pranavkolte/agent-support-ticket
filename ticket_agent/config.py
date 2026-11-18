@@ -16,6 +16,7 @@ class Settings:
     model: str
     anthropic_api_key: str | None
     groq_api_key: str | None
+    gemini_api_key: str | None
 
 
 def read_required_environment_variable(name: str) -> str:
@@ -45,4 +46,5 @@ def load_settings_from_environment(require_helpdesk_access: bool = True) -> Sett
         model=os.environ.get("MODEL", DEFAULT_MODEL).strip(),
         anthropic_api_key=read_optional_environment_variable("ANTHROPIC_API_KEY"),
         groq_api_key=read_optional_environment_variable("GROQ_API_KEY"),
+        gemini_api_key=read_optional_environment_variable("GEMINI_API_KEY"),
     )

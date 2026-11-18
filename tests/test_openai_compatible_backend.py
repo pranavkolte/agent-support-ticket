@@ -3,12 +3,12 @@ import json
 import httpx
 import pytest
 
-from ticket_agent.llm import GroqBackend, LlmUnavailable
+from ticket_agent.llm import OpenAiCompatibleBackend, LlmUnavailable
 
 
 def build_backend(handler):
     waits = []
-    backend = GroqBackend("key", "some-model", http_client=httpx.Client(transport=httpx.MockTransport(handler)), sleep=waits.append)
+    backend = OpenAiCompatibleBackend("https://llm.test/v1/chat", "key", "some-model", http_client=httpx.Client(transport=httpx.MockTransport(handler)), sleep=waits.append)
     backend.recorded_waits = waits
     return backend
 
