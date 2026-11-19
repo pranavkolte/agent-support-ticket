@@ -4,7 +4,11 @@ from tests.conftest import ScriptedBackend, build_classification
 from ticket_agent.decide import decide_ticket
 from ticket_agent.llm import LlmUnavailable
 from ticket_agent.faq import load_faq_text, split_faq_into_entries
-from ticket_agent.verify import find_menu_links_missing_from_faq, run_deterministic_reply_checks
+from ticket_agent.verify import (
+    find_claims_without_help_centre_evidence,
+    find_menu_links_missing_from_faq,
+    run_deterministic_reply_checks,
+)
 
 FAQ_TEXT = load_faq_text(Path("faq.md"))
 TICKET = {"id": "T005", "subject": "Nieuwe medewerker", "body": "Hoe voeg ik een nieuwe medewerker toe?"}
@@ -50,8 +54,7 @@ def test_invented_menu_path_fails_verification_without_calling_the_judge():
 def test_judge_finding_extra_claims_downgrades_reply_to_handoff():
     judgement = {
         "english_translation": "Go to Team. It costs 5 euro.",
-        "extra_claims": ["price 5 euro"],
-        "only_uses_cited_faq_content": False,
+        "claims": [{"claim": "price 5 euro", "help_centre_quote": ""}],
         "answers_the_question": True,
     }
     decision = decide_ticket(TICKET, ScriptedBackend(build_classification(), judgement), FAQ_TEXT)
@@ -87,7 +90,7 @@ def test_p1_ticket_is_never_auto_replied():
 
 
 def test_failed_judge_check_keeps_the_extra_claims_for_the_log():
-    judgement = {"english_translation": "x", "extra_claims": ["promises a refund"], "only_uses_cited_faq_content": False, "answers_the_question": True}
+    judgement = {"english_translation": "x", "claims": [{"claim": "promises a refund", "help_centre_quote": "we always refund everything"}], "answers_the_question": True}
     decision = decide_ticket(TICKET, ScriptedBackend(build_classification(), judgement), FAQ_TEXT)
     assert "promises a refund" in decision.verifier_result
 
@@ -121,3 +124,13 @@ def test_short_dutch_ticket_the_detector_is_unsure_about_keeps_the_model_label()
     ticket = {"id": "T9", "subject": "Hoi", "body": "Nieuwe medewerker?"}
     decision = decide_ticket(ticket, ScriptedBackend(build_classification()), FAQ_TEXT)
     assert decision.language == "nl" and decision.action == "reply"
+
+
+def test_claim_with_a_real_help_centre_quote_passes_and_an_invented_quote_fails():
+    real = {"claim": "app needs iOS 16", "help_centre_quote": "The app works on iOS 16 and later"}
+    invented = {"claim": "refund in 5 days", "help_centre_quote": "Refunds are paid within five days"}
+    assert find_claims_without_help_centre_evidence([real, invented], FAQ_TEXT) == ["refund in 5 days"]
+
+
+def test_reply_mentioning_a_help_centre_entry_id_is_rejected():
+    assert "faq_entry_id_in_reply" in run_deterministic_reply_checks("Zie F12 voor de eisen.", "nl", FAQ_TEXT)

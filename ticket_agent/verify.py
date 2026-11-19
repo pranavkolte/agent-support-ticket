@@ -13,6 +13,8 @@ DetectorFactory.seed = 0
 SUPPORTED_LANGUAGE_CODES = {"nl", "en", "de"}
 QUOTED_PHRASE_PATTERN = re.compile(r"[\"“„]([^\"”“]{3,60})[\"”“]")
 MENU_ARROW_PATTERN = re.compile(r"(\S+)\s*→\s*(\S+)")
+FAQ_ENTRY_ID_PATTERN = re.compile(r"\bF\d{2}\b")
+MIN_QUOTE_LENGTH = 8
 WEB_ADDRESS_PATTERN = re.compile(r"\b(?:[a-z0-9-]+\.)+(?:nl|com|org|eu)(?:/[^\s,;)]*)?", re.IGNORECASE)
 
 
@@ -56,6 +58,16 @@ def find_web_addresses_missing_from_faq(draft_reply: str, faq_text: str) -> list
     return [address for address in addresses if address not in lowered_faq]
 
 
+def find_claims_without_help_centre_evidence(claims: list[dict], faq_text: str) -> list[str]:
+    normalised_faq = normalise_for_comparison(faq_text)
+    unsupported_claims = []
+    for claim in claims:
+        quote = normalise_for_comparison(str(claim.get("help_centre_quote") or ""))
+        if len(quote) < MIN_QUOTE_LENGTH or quote not in normalised_faq:
+            unsupported_claims.append(str(claim.get("claim")))
+    return unsupported_claims
+
+
 def draft_is_written_in_wrong_language(draft_reply: str, expected_language: str) -> bool:
     try:
         detected_language = detect(draft_reply)
@@ -68,6 +80,8 @@ def run_deterministic_reply_checks(draft_reply: str, expected_language: str, faq
     failed_checks = []
     if draft_is_written_in_wrong_language(draft_reply, expected_language):
         failed_checks.append("reply_language_mismatch")
+    if FAQ_ENTRY_ID_PATTERN.search(draft_reply):
+        failed_checks.append("faq_entry_id_in_reply")
     if contains_payment_details(draft_reply):
         failed_checks.append("payment_details_in_reply")
     draft_without_bracketed_translations = re.sub(r"\([^)]*\)", " ", draft_reply)
@@ -94,7 +108,8 @@ def check_reply_draft(backend, ticket: dict, classification: Classification, faq
     except LlmUnavailable:
         return ReplyCheckResult(passed=False, failed_checks=["reply_judge_unavailable"])
     answer = judgement.data
-    if answer.get("extra_claims") or not answer.get("only_uses_cited_faq_content"):
+    unsupported_claims = find_claims_without_help_centre_evidence(answer.get("claims") or [], faq_text)
+    if unsupported_claims:
         failed_checks.append("reply_has_claims_outside_faq")
     if not answer.get("answers_the_question"):
         failed_checks.append("reply_does_not_answer_question")
@@ -102,7 +117,7 @@ def check_reply_draft(backend, ticket: dict, classification: Classification, faq
         passed=not failed_checks,
         failed_checks=failed_checks,
         english_translation=answer.get("english_translation"),
-        extra_claims=[str(claim) for claim in answer.get("extra_claims") or []],
+        extra_claims=unsupported_claims,
         input_tokens=judgement.input_tokens,
         output_tokens=judgement.output_tokens,
     )

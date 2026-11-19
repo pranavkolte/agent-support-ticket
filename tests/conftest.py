@@ -40,8 +40,7 @@ class ScriptedBackend:
         self.classification = classification
         self.judgement = judgement or {
             "english_translation": "Go to Team, Add employee.",
-            "extra_claims": [],
-            "only_uses_cited_faq_content": True,
+            "claims": [{"claim": "Add via Team", "help_centre_quote": "enter name, email address and contract hours"}],
             "answers_the_question": True,
         }
         self.purposes_asked = []
