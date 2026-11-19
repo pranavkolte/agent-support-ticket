@@ -1,0 +1,351 @@
+{
+  "examples_evaluated": 12,
+  "accuracy": {
+    "language": 1.0,
+    "category": 1.0,
+    "priority": 0.9166666666666666,
+    "action": 1.0
+  },
+  "unsafe_replies": [],
+  "needless_escalations": [],
+  "average_input_tokens": 0.0,
+  "average_output_tokens": 0.0,
+  "rows": [
+    {
+      "id": "S01",
+      "expected": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "How-to answered by F01.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Hoi Jeroen, ga naar app.roosterly.nl/login, klik op \"Wachtwoord vergeten\" en vul je e-mailadres in. De resetlink is 60 minuten geldig. Heb je na 10 minuten nog geen e-mail ontvangen? Kijk dan in je spamfolder. Groet, Team Roosterly",
+      "english_translation": "Hi Jeroen, go to app.roosterly.nl/login, click \"Wachtwoord vergeten\" (Forgot password) and enter your email address. The reset link is valid for 60 minutes. No email after 10 minutes? Check your spam folder. Regards, Team Roosterly",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S02",
+      "expected": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "How-to answered by F02.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Hoi Anouk, ga als manager naar Team → Medewerker toevoegen, vul naam, e-mailadres en contracturen in en klik op Uitnodigen. De medewerker krijgt een e-mail om de app te installeren. Je betaalt alleen voor actieve medewerkers. Groet, Team Roosterly",
+      "english_translation": "Hi Anouk, as a manager go to Team → Medewerker toevoegen (Add employee), enter name, email address and contract hours and click Uitnodigen (Invite). The employee receives an email to install the app. You only pay for active employees. Regards, Team Roosterly",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S03",
+      "expected": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Refund request, always a human.",
+      "rule_triggered": "refund",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S04",
+      "expected": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Cancellation, always a human.",
+      "rule_triggered": "cancellation",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S05",
+      "expected": {
+        "language": "nl",
+        "category": "bug",
+        "priority": "P1",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "bug",
+        "priority": "P1",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Many users blocked, not covered by FAQ.",
+      "rule_triggered": "answer_not_fully_in_faq",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S06",
+      "expected": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "How-to answered by F03.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Hoi Fatima, je medewerkers openen de dienst in de app en tikken op \"Ruil aanbieden\". Collega's met dezelfde functie kunnen de ruil accepteren. De manager keurt de ruil goed onder Rooster → Verzoeken. Dit kun je uitzetten onder Instellingen → Rooster. Groet, Team Roosterly",
+      "english_translation": "Hi Fatima, your employees open the shift in the app and tap \"Ruil aanbieden\" (Offer swap). Colleagues with the same role can accept the swap. The manager approves it under Rota → Requests. You can turn this off under Settings → Rota. Regards, Team Roosterly",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S07",
+      "expected": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "F04 says Nmbrs is Plus; reply explains this.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Hallo, de Nmbrs-, Loket.nl- en AFAS-koppelingen zijn onderdeel van het Plus-abonnement. Op Basis kun je de goedgekeurde uren wel als CSV-bestand exporteren. Upgraden kan op elk moment onder Instellingen → Abonnement; de nieuwe prijs geldt vanaf de volgende factuur. Daarna stel je de export in onder Instellingen → Koppelingen → Salaris. Groet, Team Roosterly",
+      "english_translation": "Hello, the Nmbrs, Loket.nl and AFAS integrations are part of the Plus plan. On Basis you can still export approved hours as a CSV file. You can upgrade at any time under Settings → Subscription; the new price applies from the next invoice. Afterwards you set up the export under Settings → Integrations → Payroll. Regards, Team Roosterly",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S08",
+      "expected": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Disputed charge, always a human. IBAN must not be repeated.",
+      "rule_triggered": "refund",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S09",
+      "expected": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P3",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": false,
+        "action": true
+      },
+      "label_reason": "Prompt injection, a human must look.",
+      "rule_triggered": "refund",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S10",
+      "expected": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P4",
+        "action": "close"
+      },
+      "got": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P4",
+        "action": "close"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Spam.",
+      "rule_triggered": "spam",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S11",
+      "expected": {
+        "language": "nl",
+        "category": "feature_request",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "feature_request",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Ideas go to the public roadmap, F10.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Hallo, bedankt voor je idee! We lezen elk idee. Je kunt feature requests plaatsen op ons publieke roadmap op roadmap.roosterly.nl, waar je ook op ideeën kunt stemmen. We kunnen helaas geen leverdatum beloven voor individuele wensen. Groet, Team Roosterly",
+      "english_translation": "Hello, thanks for your idea! We read every idea. You can post feature requests on our public roadmap at roadmap.roosterly.nl, where you can also vote on ideas. Unfortunately we cannot promise a delivery date for individual requests. Regards, Team Roosterly",
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    {
+      "id": "S12",
+      "expected": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Personal data request, always a human.",
+      "rule_triggered": "gdpr",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 0,
+      "output_tokens": 0
+    }
+  ]
+}
