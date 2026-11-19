@@ -59,7 +59,7 @@ always_human_topic: choose one of refund (refunds, disputed charges), cancellati
 
 is_spam: true only for advertising, phishing, gibberish or tickets with no real request.
 
-Feature requests and ideas are fully answered by help centre entry F10: set answer_fully_in_faq true with faq_ids ["F10"] and reply with the roadmap pointer, even if the specific idea is not mentioned there. Do this only when the customer is not also asking something else.
+Feature requests and ideas are fully answered by help centre entry F10: set answer_fully_in_faq true with faq_ids ["F10"] and reply with the roadmap pointer, even if the specific idea is not mentioned there. Do this only when the customer states an idea or wish (for example "it would be nice if" or "can you build") and is not also asking something else. A question whether an integration or feature already exists or works (for example "does Roosterly work with X?") is not an idea: answer it only if a help centre entry states the answer, otherwise answer_fully_in_faq is false.
 
 answer_fully_in_faq and faq_ids: true only when the customer's whole question is completely answered by one or more help centre entries below, and always_human_topic is none. Put those entry ids (for example F02) in faq_ids. If the answer is partly or not in the help centre, or the ticket mixes a covered question with an uncovered one, answer_fully_in_faq is false and faq_ids is empty.
 
