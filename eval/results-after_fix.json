@@ -1,0 +1,295 @@
+{
+  "examples_evaluated": 10,
+  "accuracy": {
+    "language": 1.0,
+    "category": 1.0,
+    "priority": 1.0,
+    "action": 1.0
+  },
+  "unsafe_replies": [],
+  "needless_escalations": [],
+  "average_input_tokens": 3288.2,
+  "average_output_tokens": 262.6,
+  "rows": [
+    {
+      "id": "E01",
+      "expected": {
+        "language": "en",
+        "category": "bug",
+        "priority": "P3",
+        "action": "reply"
+      },
+      "got": {
+        "language": "en",
+        "category": "bug",
+        "priority": "P3",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "English ticket. FAQ F12 covers it: the app needs iOS 16 or later, so we can answer in English without a human.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "I am sorry to hear that you are experiencing issues with the app. According to our requirements, the Roosterly app works on iOS 16 and later. Since your device is running iOS 15, it does not meet the minimum requirements for the app.",
+      "english_translation": "I am sorry to hear that you are experiencing issues with the app. According to our requirements, the Roosterly app works on iOS 16 and later. Since your device is running iOS 15, it does not meet the minimum requirements for the app.",
+      "input_tokens": 3860,
+      "output_tokens": 339
+    },
+    {
+      "id": "E02",
+      "expected": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "How to change invoice details is in FAQ F06. Reply in Dutch.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "U kunt uw btw-nummer voor toekomstige facturen zelf aanpassen in de app. Ga hiervoor naar Instellingen → Bedrijfsgegevens.",
+      "english_translation": "You can change your VAT number for future invoices yourself in the app. To do this, go to Settings → Company details.",
+      "input_tokens": 3841,
+      "output_tokens": 270
+    },
+    {
+      "id": "E03",
+      "expected": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Refund request ('terugkrijgen' = get back). Client rule: refunds always go to a human.",
+      "rule_triggered": "refund",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 2454,
+      "output_tokens": 143
+    },
+    {
+      "id": "E04",
+      "expected": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Dutch how-to question about swapping shifts, answered by FAQ F03. Reply in Dutch.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Om een dienst te ruilen, open je de dienst in de app en tik je op Ruil aanbieden. Collega's met dezelfde rol kunnen het ruilvoorstel accepteren. De manager keurt de ruil vervolgens goed onder Rooster → Verzoeken.",
+      "english_translation": "To swap a shift, open the shift in the app and tap \"Ruil aanbieden\" (Offer swap). Colleagues with the same role can accept the swap proposal. The manager then approves the swap under Rooster → Verzoeken (Rota → Requests).",
+      "input_tokens": 3846,
+      "output_tokens": 407
+    },
+    {
+      "id": "E05",
+      "expected": {
+        "language": "nl",
+        "category": "feature_request",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "feature_request",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Feature request (Google Calendar sync). Acknowledge in Dutch and point to the roadmap (F10).",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Bedankt voor je suggestie voor een koppeling met Google Agenda. Wij lezen alle ideeën en houden deze bij op onze openbare roadmap. Je kunt je stem uitbrengen op ideeën via roadmap.roosterly.nl. Wij kunnen helaas geen leverdatum beloven voor individuele verzoeken.",
+      "english_translation": "Thank you for your suggestion for a Google Calendar integration. We read all ideas and keep track of them on our public roadmap. You can vote on ideas via roadmap.roosterly.nl. Unfortunately, we cannot promise a delivery date for individual requests.",
+      "input_tokens": 3854,
+      "output_tokens": 407
+    },
+    {
+      "id": "E06",
+      "expected": {
+        "language": "en",
+        "category": "bug",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "en",
+        "category": "bug",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "One customer blocked from publishing: P2, needs an engineer.",
+      "rule_triggered": "answer_not_fully_in_faq",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 2457,
+      "output_tokens": 167
+    },
+    {
+      "id": "E07",
+      "expected": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "billing",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Price question answered by F05 (25 x €6 = €150 excl. VAT). Reply in Dutch.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Het Plus-abonnement kost 6 euro per actieve medewerker per maand, exclusief btw. Voor 25 medewerkers komt dit neer op 150 euro per maand. U kunt op elk gewenst moment upgraden via Instellingen → Abonnement (Settings → Subscription).",
+      "english_translation": "The Plus subscription costs 6 euros per active employee per month, excluding VAT. For 25 employees, this amounts to 150 euros per month. You can upgrade at any time via Settings → Subscription.",
+      "input_tokens": 3852,
+      "output_tokens": 372
+    },
+    {
+      "id": "E08",
+      "expected": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P4",
+        "action": "close"
+      },
+      "got": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P4",
+        "action": "close"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Spam (crypto offer): close it.",
+      "rule_triggered": "spam",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 2448,
+      "output_tokens": 114
+    },
+    {
+      "id": "E09",
+      "expected": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "got": {
+        "language": "nl",
+        "category": "other",
+        "priority": "P2",
+        "action": "handoff"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "GDPR access request ('inzageverzoek', AVG = Dutch GDPR): always a human.",
+      "rule_triggered": "gdpr",
+      "verifier_result": "not_needed",
+      "draft_reply": null,
+      "english_translation": null,
+      "input_tokens": 2454,
+      "output_tokens": 142
+    },
+    {
+      "id": "E10",
+      "expected": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "got": {
+        "language": "nl",
+        "category": "question",
+        "priority": "P4",
+        "action": "reply"
+      },
+      "matches": {
+        "language": true,
+        "category": true,
+        "priority": true,
+        "action": true
+      },
+      "label_reason": "Asks about planned maintenance tonight. Point to the status page (F11), in Dutch.",
+      "rule_triggered": null,
+      "verifier_result": "passed",
+      "draft_reply": "Je kunt de actuele status van onze systemen en eventueel gepland onderhoud altijd bekijken op status.roosterly.nl.",
+      "english_translation": "You can always view the current status of our systems and any planned maintenance at status.roosterly.nl.",
+      "input_tokens": 3816,
+      "output_tokens": 265
+    }
+  ]
+}
