@@ -8,8 +8,8 @@
   },
   "unsafe_replies": [],
   "needless_escalations": [],
-  "average_input_tokens": 3288.2,
-  "average_output_tokens": 262.6,
+  "average_input_tokens": 3505.3,
+  "average_output_tokens": 264.8,
   "rows": [
     {
       "id": "E01",
@@ -34,10 +34,10 @@
       "label_reason": "English ticket. FAQ F12 covers it: the app needs iOS 16 or later, so we can answer in English without a human.",
       "rule_triggered": null,
       "verifier_result": "passed",
-      "draft_reply": "I am sorry to hear that you are experiencing issues with the app. According to our requirements, the Roosterly app works on iOS 16 and later. Since your device is running iOS 15, it does not meet the minimum requirements for the app.",
-      "english_translation": "I am sorry to hear that you are experiencing issues with the app. According to our requirements, the Roosterly app works on iOS 16 and later. Since your device is running iOS 15, it does not meet the minimum requirements for the app.",
-      "input_tokens": 3860,
-      "output_tokens": 339
+      "draft_reply": "I am sorry to hear that you are experiencing issues with the app. According to our requirements, the app works on iOS 16 and later. Since your iPhone 8 is running iOS 15, it does not meet the minimum requirements for the app.",
+      "english_translation": "I am sorry to hear that you are experiencing issues with the app. According to our requirements, the app works on iOS 16 and later. Since your iPhone 8 is running iOS 15, it does not meet the minimum requirements for the app.",
+      "input_tokens": 4087,
+      "output_tokens": 331
     },
     {
       "id": "E02",
@@ -62,10 +62,10 @@
       "label_reason": "How to change invoice details is in FAQ F06. Reply in Dutch.",
       "rule_triggered": null,
       "verifier_result": "passed",
-      "draft_reply": "U kunt uw btw-nummer voor toekomstige facturen zelf aanpassen in de app. Ga hiervoor naar Instellingen → Bedrijfsgegevens.",
-      "english_translation": "You can change your VAT number for future invoices yourself in the app. To do this, go to Settings → Company details.",
-      "input_tokens": 3841,
-      "output_tokens": 270
+      "draft_reply": "U kunt uw btw-nummer voor toekomstige facturen zelf aanpassen onder Instellingen → Bedrijfsgegevens.",
+      "english_translation": "You can change your VAT number for future invoices yourself under Settings → Company details.",
+      "input_tokens": 4061,
+      "output_tokens": 259
     },
     {
       "id": "E03",
@@ -92,8 +92,8 @@
       "verifier_result": "not_needed",
       "draft_reply": null,
       "english_translation": null,
-      "input_tokens": 2454,
-      "output_tokens": 143
+      "input_tokens": 2656,
+      "output_tokens": 141
     },
     {
       "id": "E04",
@@ -120,7 +120,7 @@
       "verifier_result": "passed",
       "draft_reply": "Om een dienst te ruilen, open je de dienst in de app en tik je op Ruil aanbieden. Collega's met dezelfde rol kunnen het ruilvoorstel accepteren. De manager keurt de ruil vervolgens goed onder Rooster → Verzoeken.",
       "english_translation": "To swap a shift, open the shift in the app and tap \"Ruil aanbieden\" (Offer swap). Colleagues with the same role can accept the swap proposal. The manager then approves the swap under Rooster → Verzoeken (Rota → Requests).",
-      "input_tokens": 3846,
+      "input_tokens": 4073,
       "output_tokens": 407
     },
     {
@@ -146,10 +146,10 @@
       "label_reason": "Feature request (Google Calendar sync). Acknowledge in Dutch and point to the roadmap (F10).",
       "rule_triggered": null,
       "verifier_result": "passed",
-      "draft_reply": "Bedankt voor je suggestie voor een koppeling met Google Agenda. Wij lezen alle ideeën en houden deze bij op onze openbare roadmap. Je kunt je stem uitbrengen op ideeën via roadmap.roosterly.nl. Wij kunnen helaas geen leverdatum beloven voor individuele verzoeken.",
-      "english_translation": "Thank you for your suggestion for a Google Calendar integration. We read all ideas and keep track of them on our public roadmap. You can vote on ideas via roadmap.roosterly.nl. Unfortunately, we cannot promise a delivery date for individual requests.",
-      "input_tokens": 3854,
-      "output_tokens": 407
+      "draft_reply": "Bedankt voor je suggestie. Wij lezen alle ideeën die we ontvangen. Je kunt jouw verzoek voor een koppeling met Google Agenda terugvinden op onze openbare roadmap via roadmap.roosterly.nl, waar je ook op ideeën kunt stemmen. Wij kunnen geen datum toezeggen voor de realisatie van individuele verzoeken.",
+      "english_translation": "Thank you for your suggestion. We read every idea we receive. You can find your request for a Google Calendar integration on our public roadmap at roadmap.roosterly.nl, where you can also vote on ideas. We cannot promise a delivery date for the realization of individual requests.",
+      "input_tokens": 4091,
+      "output_tokens": 412
     },
     {
       "id": "E06",
@@ -176,8 +176,8 @@
       "verifier_result": "not_needed",
       "draft_reply": null,
       "english_translation": null,
-      "input_tokens": 2457,
-      "output_tokens": 167
+      "input_tokens": 2659,
+      "output_tokens": 159
     },
     {
       "id": "E07",
@@ -202,10 +202,10 @@
       "label_reason": "Price question answered by F05 (25 x €6 = €150 excl. VAT). Reply in Dutch.",
       "rule_triggered": null,
       "verifier_result": "passed",
-      "draft_reply": "Het Plus-abonnement kost 6 euro per actieve medewerker per maand, exclusief btw. Voor 25 medewerkers komt dit neer op 150 euro per maand. U kunt op elk gewenst moment upgraden via Instellingen → Abonnement (Settings → Subscription).",
-      "english_translation": "The Plus subscription costs 6 euros per active employee per month, excluding VAT. For 25 employees, this amounts to 150 euros per month. You can upgrade at any time via Settings → Subscription.",
-      "input_tokens": 3852,
-      "output_tokens": 372
+      "draft_reply": "Het Plus-abonnement kost 6 euro per actieve medewerker per maand. Voor 25 medewerkers komt dit neer op 150 euro per maand, exclusief btw. U kunt op elk gewenst moment upgraden via Instellingen → Abonnement.",
+      "english_translation": "The Plus plan costs 6 euros per active employee per month. For 25 employees, this amounts to 150 euros per month, excluding VAT. You can upgrade at any time via Settings → Subscription.",
+      "input_tokens": 4075,
+      "output_tokens": 419
     },
     {
       "id": "E08",
@@ -232,7 +232,7 @@
       "verifier_result": "not_needed",
       "draft_reply": null,
       "english_translation": null,
-      "input_tokens": 2448,
+      "input_tokens": 2650,
       "output_tokens": 114
     },
     {
@@ -260,8 +260,8 @@
       "verifier_result": "not_needed",
       "draft_reply": null,
       "english_translation": null,
-      "input_tokens": 2454,
-      "output_tokens": 142
+      "input_tokens": 2656,
+      "output_tokens": 139
     },
     {
       "id": "E10",
@@ -286,10 +286,10 @@
       "label_reason": "Asks about planned maintenance tonight. Point to the status page (F11), in Dutch.",
       "rule_triggered": null,
       "verifier_result": "passed",
-      "draft_reply": "Je kunt de actuele status van onze systemen en eventueel gepland onderhoud altijd bekijken op status.roosterly.nl.",
-      "english_translation": "You can always view the current status of our systems and any planned maintenance at status.roosterly.nl.",
-      "input_tokens": 3816,
-      "output_tokens": 265
+      "draft_reply": "Je kunt de actuele status van onze diensten en geplande onderhoudsmomenten altijd bekijken op status.roosterly.nl.",
+      "english_translation": "You can always view the current status of our services and planned maintenance moments at status.roosterly.nl.",
+      "input_tokens": 4045,
+      "output_tokens": 267
     }
   ]
 }
