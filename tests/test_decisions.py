@@ -108,3 +108,16 @@ def test_judge_outage_turns_the_reply_into_a_handoff_instead_of_crashing():
 
     decision = decide_ticket(TICKET, JudgeDownBackend(build_classification()), FAQ_TEXT)
     assert decision.action == "handoff" and "reply_judge_unavailable" in decision.verifier_result
+
+
+def test_english_ticket_labelled_dutch_is_corrected_and_not_answered_in_dutch():
+    ticket = {"id": "E01", "subject": "App crashes", "body": "The app crashes immediately on my iPhone 8 (iOS 15). Other staff are fine."}
+    decision = decide_ticket(ticket, ScriptedBackend(build_classification(language="nl")), FAQ_TEXT)
+    assert decision.language == "en"
+    assert decision.action == "handoff" and decision.rule_triggered == "language_disagreement_with_detector"
+
+
+def test_short_dutch_ticket_the_detector_is_unsure_about_keeps_the_model_label():
+    ticket = {"id": "T9", "subject": "Hoi", "body": "Nieuwe medewerker?"}
+    decision = decide_ticket(ticket, ScriptedBackend(build_classification()), FAQ_TEXT)
+    assert decision.language == "nl" and decision.action == "reply"

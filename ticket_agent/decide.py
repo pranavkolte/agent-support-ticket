@@ -1,6 +1,6 @@
 from dataclasses import asdict, dataclass
 
-from langdetect import DetectorFactory, LangDetectException, detect
+from langdetect import LangDetectException, detect
 
 from .classify import Classification, InvalidModelOutput, classify_ticket_with_model
 from .faq import split_faq_into_entries
@@ -10,11 +10,10 @@ from .guards import (
     find_always_human_topic_in_text,
     is_ticket_empty,
 )
+from .language_detection import detect_language_with_certainty
 from .llm import LlmUnavailable
 from .redaction import redact_payment_details
 from .verify import check_reply_draft
-
-DetectorFactory.seed = 0
 
 CONFIDENCE_THRESHOLD = 0.8
 PRIORITY_FLOOR_BY_TOPIC = {
@@ -187,7 +186,14 @@ def decide_ticket(ticket: dict, backend, faq_text: str) -> Decision:
     if classification.is_spam and not looks_like_sensitive_topic:
         return build_decision(ticket["id"], classification, "close", rule_triggered="spam", **usage)
 
+    detected_language = detect_language_with_certainty(ticket_text)
+    language_was_corrected = detected_language is not None and detected_language != classification.language
+    if language_was_corrected:
+        classification.language = detected_language
+
     reason_to_hand_off = find_reason_to_hand_off(classification, ticket_text, faq_entries)
+    if reason_to_hand_off is None and language_was_corrected:
+        reason_to_hand_off = "language_disagreement_with_detector"
     if reason_to_hand_off:
         return build_decision(ticket["id"], classification, "handoff", rule_triggered=reason_to_hand_off, **usage)
 
